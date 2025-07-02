@@ -9,34 +9,37 @@ import re
 # patch=0
 #)
 
-def updateSconstruct():
+def update_sconstruct():
     # Update the build number in the SConstruct file
-    file_path = os.path.join(os.environ["SourcePath"],"develop","global","src","SConstruct")
-    temp_file_path = file_path + ".tmp"
-
-    with open(file_path, 'r') as fin, open(temp_file_path, 'w') as fout:
-        for line in fin:
-            line = re.sub("point\=[\d]+","point="+os.environ["BuildNum"],line)
-            fout.write(line)
-    
-    os.replace(temp_file_path, file_path)
+    _update_file(
+        file_path=os.environ["SourcePath"] + "/develop/global/src/SConstruct",
+        replacement=os.environ["SConstructPattern"] + os.environ["BuildNum"],
+        pattern=os.environ["SConstructPattern"] + "[\d]+"
+    )
 
 # VERSION file interesting line
 # ADLMSDK_VERSION_POINT=6
-
-def updateVersion():
+def update_version():
     # "Update the build number in the VERSION file"
-    file_path = os.path.join(os.environ["SourcePath"],"develop","global","src","VERSION")
-    temp_file_path = file_path + ".tmp"
+    _update_file(
+        file_path=os.environ["SourcePath"] + "/develop/global/src/VERSION",
+        replacement=os.environ["VersionPattern"] + os.environ["BuildNum"],
+        pattern=os.environ["VersionPattern"] + "[\d]+"
+    )
 
-    with open(file_path, 'r') as fin, open(temp_file_path, 'w') as fout:
+def _update_file(file_path, replacement, pattern):
+    # Update the build number in the file
+    temp_file_path = file_path + ".tmp"
+    with open(file_path, "r") as fin, open(temp_file_path, "w") as fout:
         for line in fin:
-            line = re.sub("ADLMSDK_VERSION_POINT=[\d]+","ADLMSDK_VERSION_POINT="+os.environ["BuildNum"],line)
+            line = re.sub(pattern, replacement, line)
             fout.write(line)
     
     os.replace(temp_file_path, file_path)
+    
+
 
 def main():
-    updateSconstruct()
-    updateVersion()
+    update_sconstruct()
+    update_version()
     main()
