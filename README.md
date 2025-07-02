@@ -29,5 +29,7 @@ pytest
 python src/reverse_words.py
 ```
 
-Assignment 2 is in Assignment 2 folder
+# Assignment 2
+## I treated Assignment 2 as a refactoring of code in a pseudo codebase, so I did not add any additional env file / requirements.txt to run it
+## Created each commit to show my thought process and how I would have split up my commits for refactoring (like in a real job situation)
 
