@@ -2,26 +2,32 @@ import os
 import re
 import logging 
 
-# SCONSTRUCT file interesting lines
-# config.version = Version(
-# major=15,
-# minor=0,
-# point=6,
-# patch=0
-#)
 
 def update_sconstruct():
-    # Update the build number in the SConstruct file
+    """
+    Updates the 'point=' line in the SConstruct file with the new build number
+
+    How it looks 
+    config.version = Version(
+        major=15,
+        minor=0,
+        point=6,
+        patch=0
+    )
+    """
     _update_file(
         file_path=os.environ["SourcePath"] + "/develop/global/src/SConstruct",
         replacement=os.environ["SConstructPattern"],
         build_num=os.environ["BuildNum"]
     )
 
-# VERSION file interesting line
-# ADLMSDK_VERSION_POINT=6
 def update_version():
-    # "Update the build number in the VERSION file"
+    """
+    Updates the 'ADLMSDK_VERSION_POINT=' line in the VERSION file with the new build number
+
+    How it looks 
+    ADLMSDK_VERSION_POINT=6
+    """
     _update_file(
         file_path=os.environ["SourcePath"] + "/develop/global/src/VERSION",
         pattern=os.environ["VersionPattern"],
@@ -29,7 +35,9 @@ def update_version():
     )
 
 def _update_file(file_path, pattern, build_num):
-    # Update the build number in the file
+    """
+    Generic function to update a file with a new build number
+    """
 
     logging.info(f"Updating {file_path} with Regex pattern {pattern} and build number {build_num}")
 
@@ -49,6 +57,9 @@ def _update_file(file_path, pattern, build_num):
 
     
 def _validate_env_vars(required_vars):
+    """
+    Validates that all required environment variables are set
+    """
     missing = []
     for var in required_vars:
         val = os.environ.get(var)
